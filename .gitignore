@@ -1,0 +1,5 @@
+# Project exclude paths
+/.gradle/
+/build/
+/template/build/
+/time_conversion/build/
