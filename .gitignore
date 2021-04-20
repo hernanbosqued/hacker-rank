@@ -1,5 +1,7 @@
 # Project exclude paths
-/.gradle/
-/build/
-/template/build/
-/time_conversion/build/
+.gradle/
+.idea/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
