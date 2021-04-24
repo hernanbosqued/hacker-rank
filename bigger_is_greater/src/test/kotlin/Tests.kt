@@ -18,6 +18,12 @@ class Tests {
         println("AFTER")
     }
 
+
+    @Test
+    fun a() {
+        Assert.assertEquals("no answer", biggerIsGreater("a"))
+    }
+
     @Test
     fun dkhc() {
         Assert.assertEquals("hcdk", biggerIsGreater("dkhc"))
@@ -54,6 +60,11 @@ class Tests {
     }
 
     @Test
+    fun aaaaazbaaaa() {
+        Assert.assertEquals("aaaabaaaaaz", biggerIsGreater("aaaaazbaaaa"))
+    }
+
+    @Test
     fun fromFile() {
         val inputFile = File("./src/resources/input.txt")
         val scannerInput = Scanner(inputFile)
@@ -71,6 +82,7 @@ class Tests {
 
             Assert.assertEquals(expected, output)
             println(" OK")
+            println(output)
         }
     }
 
