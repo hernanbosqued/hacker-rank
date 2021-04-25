@@ -21,16 +21,16 @@ fun biggerIsGreater(parameter: String): String {
         else -> {
             builder.append(parameter.substring(0, index))
 
-            val post = parameter.substring(index, parameter.length).toMutableList()
-            val symbols = post.toSet().sorted()
-            val symbolIndex = symbols.indexOf(parameter[index])
+            for (swapIndex in parameter.length - 1 downTo index) {
+                if (parameter[swapIndex] > parameter[index]) {
+                    builder.append(parameter[swapIndex])
 
-            builder.append(symbols[symbolIndex + 1])
-
-            val postIndex = post.indexOf(symbols[symbolIndex + 1])
-            post.removeAt(postIndex)
-            post.sort()
-            builder.append(post.toCharArray())
+                    val chars = parameter.toCharArray()
+                    chars[swapIndex] = chars[index]
+                    builder.append(chars.drop(index + 1).reversed().toCharArray())
+                    break
+                }
+            }
             builder.toString()
         }
     }
