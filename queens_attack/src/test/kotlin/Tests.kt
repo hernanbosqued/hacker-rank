@@ -1,4 +1,6 @@
 import hernanbosqued.samples.queensAttack
+import java.io.File
+import java.util.Scanner
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -29,7 +31,7 @@ class Tests {
     }
 
     @Test
-    fun `5x5, queen in (4,3) and three obstacles in (1,1)`() {
+    fun `5x5, queen in (4,3) and three obstacles`() {
         val distance = queensAttack(5, 3, 4, 3, arrayOf(arrayOf(5, 5), arrayOf(4, 2), arrayOf(2, 3)))
         Assert.assertEquals(10, distance)
     }
@@ -44,5 +46,30 @@ class Tests {
     fun `100000x100000, queen in (4187,5068) and no obstacles`() {
         val distance = queensAttack(100000, 0, 4187, 5068, emptyArray())
         Assert.assertEquals(308369, distance)
+    }
+
+
+    @Test
+    fun `From file`() {
+        val file = File("./src/resources/input.txt")
+        val scanner = Scanner(file)
+
+        val n = scanner.nextInt()
+        val k = scanner.nextInt()
+
+        val r_q = scanner.nextInt()
+        val c_q = scanner.nextInt()
+
+        val obstacles = Array(k) {
+            Array(2){0}
+        }
+
+        for (item in obstacles) {
+            item[0] = scanner.nextInt()
+            item[1] = scanner.nextInt()
+        }
+
+        val distance = queensAttack(n, k, r_q, c_q, obstacles)
+        Assert.assertEquals(110198, distance)
     }
 }

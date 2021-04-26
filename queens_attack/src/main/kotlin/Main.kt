@@ -1,58 +1,35 @@
 package hernanbosqued.samples
 
-import java.lang.RuntimeException
+import java.lang.IllegalArgumentException
 import java.util.*
 
 // Complete the queensAttack function below.
 fun queensAttack(n: Int, k: Int, r_q: Int, c_q: Int, obstacles: Array<Array<Int>>): Int {
 
-    val allObstacles = mutableSetOf<Pair<Int, Int>>()
-    allObstacles.addAll(obstacles.map { Pair(it[0], it[1]) })
-
-    if (allObstacles.contains(Pair(r_q, c_q))) {
-        throw RuntimeException("obstacle in queen cell")
-    }
-
-    if( n <= 0 || n > 1E5){
-        throw RuntimeException("max number of rows and columns are 1x10E5")
-    }
-
-    if( k < 0 || k > 1E5){
-        throw RuntimeException("max number of obstacles are 1x10E5")
-    }
-
-    for (i in 0..n + 1) {
-        allObstacles.add(Pair(0, i))
-        allObstacles.add(Pair(n + 1, i))
-        allObstacles.add(Pair(i, 0))
-        allObstacles.add(Pair(i, n + 1))
-    }
-
+    val obstaclesSet = obstacles.map { Pair(it[0], it[1]) }.toSet()
     val queen = Pair(r_q, c_q)
 
-    val left = findDistance(allObstacles, queen, Pair(-1, 0))
-    val right = findDistance(allObstacles, queen, Pair(1, 0))
-    val bottom = findDistance(allObstacles, queen, Pair(0, -1))
-    val top = findDistance(allObstacles, queen, Pair(0, 1))
-    val leftTop = findDistance(allObstacles, queen, Pair(-1, 1))
-    val rightTop = findDistance(allObstacles, queen, Pair(1, 1))
-    val leftBottom = findDistance(allObstacles, queen, Pair(-1, -1))
-    val rightBottom = findDistance(allObstacles, queen, Pair(1, -1))
+    if (obstaclesSet.contains(queen) || n <= 0 || n > 1E5 || k < 0 || k > 1E5) {
+        throw IllegalArgumentException()
+    }
 
-    return top + bottom + left + right + leftTop + rightTop + leftBottom + rightBottom
+    val deltas = arrayOf(Pair(-1, 0), Pair(1, 0), Pair(0, -1), Pair(0, 1), Pair(-1, 1), Pair(1, 1), Pair(-1, -1), Pair(1, -1))
+
+    return deltas.sumBy { findDistance(n, obstaclesSet, queen, it) }
 }
 
-fun findDistance(wallObstacles: Set<Pair<Int, Int>>, queen: Pair<Int, Int>, delta: Pair<Int, Int>): Int {
+fun findDistance(n: Int, obstacles: Set<Pair<Int, Int>>, queen: Pair<Int, Int>, delta: Pair<Int, Int>): Int {
     var distance = 0
 
-    var point = queen
+    var point = Pair(queen.first + delta.first, queen.second + delta.second)
 
-    while (true) {
-        point = Pair(point.first + delta.first, point.second + delta.second)
-        if (wallObstacles.contains(point)) {
-            return distance
+    while (point.first in 1..n && point.second in 1..n) {
+        if (obstacles.contains(point)) {
+            break
         } else distance++
+        point = Pair(point.first + delta.first, point.second + delta.second)
     }
+    return distance
 }
 
 fun main(args: Array<String>) {
